@@ -18,10 +18,10 @@ sed -i "s/sylius.database.name: sylius/sylius.database.name: ${DATABASE_NAME}/g"
 sed -i "s/sylius.database.user: root/sylius.database.user: ${DATABASE_USER}/g" app/config/parameters.yml
 sed -i "s/sylius.database.password: null/sylius.database.password: ${DATABASE_PASSWORD}/g" app/config/parameters.yml
 
-sed -i "s/parameters.yml/parameters_sylius.yml/g" app/config/config.yml
-mv app/config/parameters.yml app/config/parameters_sylius.yml
-sed -i "/^imports:/ a\    - { resource: parameters.yml }\\" app/config/config.yml
-
 # Enable this for install database, set the right environment
 app/console doctrine:database:create --env=${SYMFONY_ENV} --no-interaction
 app/console doctrine:schema:create --env=${SYMFONY_ENV} --no-interaction
+
+sed -i "s/parameters.yml/parameters_sylius.yml/g" app/config/config.yml
+mv app/config/parameters.yml app/config/parameters_sylius.yml
+sed -i "/^imports:/ a\    - { resource: parameters.yml }\\" app/config/config.yml
