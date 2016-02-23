@@ -12,6 +12,7 @@ sed -i "s/sylius.database.host: 127.0.0.1/sylius.database.host: %database.server
 sed -i "s/sylius.database.name: sylius/sylius.database.name: %database.name%/g" app/config/parameters_sylius.yml
 sed -i "s/sylius.database.user: root/sylius.database.user: %database.user%/g" app/config/parameters_sylius.yml
 sed -i "s/sylius.database.password: null/sylius.database.password: %database.password%/g" app/config/parameters_sylius.yml
+sed -i "s/sylius.currency: USD/sylius.currency: %currency%/g" app/config/parameters_sylius.yml
 
 sed -i "s/parameters.yml/parameters_sylius.yml/g" app/config/config.yml
 sed -i "/^imports:/ a\    - { resource: parameters.yml }\\" app/config/config.yml
