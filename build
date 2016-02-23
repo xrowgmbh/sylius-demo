@@ -4,7 +4,14 @@ set -e
 set -x
 
 composer -n create-project sylius/sylius
-cd sylius
+mv -f sylius/* .
+rm -R sylius
+
+sed -i "s/sylius.database.host: 127.0.0.1/sylius.database.host: ${DATABASE_SERVER}/g" app/config/parameters.yml
+sed -i "s/sylius.database.name: sylius/sylius.database.name: ${DATABASE_NAME}/g" app/config/parameters.yml
+sed -i "s/sylius.database.user: sylius/sylius.database.user: ${DATABASE_USER}/g" app/config/parameters.yml
+sed -i "s/sylius.database.password: sylius/sylius.database.password: ${DATABASE_PASSWORD}/g" app/config/parameters.yml
+
 #app/console sylius:install
 
 #sed -i "
@@ -17,5 +24,5 @@ cd sylius
 #" ezpublish_legacy/settings/override/site.ini.append.php
 
 # Enable this for install database, set the right environment
-app/console doctrine:database:create --env=prod
-app/console doctrine:schema:create --env=prod
+#app/console doctrine:database:create --env=prod
+#app/console doctrine:schema:create --env=prod
