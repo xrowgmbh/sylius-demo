@@ -6,22 +6,18 @@ set -x
 composer -n create-project sylius/sylius
 mv -f sylius/* .
 rm -R sylius
+mv app/config/parameters.yml app/config/parameters_sylius.yml
 
-sed -i "s/sylius.database.host: 127.0.0.1/sylius.database.host: ${DATABASE_SERVER}/g" app/config/parameters.yml
-sed -i "s/sylius.database.name: sylius/sylius.database.name: ${DATABASE_NAME}/g" app/config/parameters.yml
-sed -i "s/sylius.database.user: sylius/sylius.database.user: ${DATABASE_USER}/g" app/config/parameters.yml
-sed -i "s/sylius.database.password: sylius/sylius.database.password: ${DATABASE_PASSWORD}/g" app/config/parameters.yml
+sed -i "s/sylius.database.host: 127.0.0.1/sylius.database.host: %database.server%/g" app/config/parameters_sylius.yml
+sed -i "s/sylius.database.name: sylius/sylius.database.name: %database.name%/g" app/config/parameters_sylius.yml
+sed -i "s/sylius.database.user: sylius/sylius.database.user: %database.user%/g" app/config/parameters_sylius.yml
+sed -i "s/sylius.database.password: sylius/sylius.database.password: %database.password%/g" app/config/parameters_sylius.yml
 
+sed -i "s/parameters.yml/parameters_sylius.yml/g" app/config/config.yml
+sed -i "/^imports:/ a\    - { resource: parameters_sylius.yml }\\" app/config/config.yml
+
+# Install Sylius
 #app/console sylius:install
-
-#sed -i "
-#/^\[DatabaseSettings\]/ a\
-#Server=${DATABASE_SERVER}\\
-#Port=3306\\
-#User=${DATABASE_USER}\\
-#Password=${DATABASE_PASSWORD}\\
-#Database=${DATABASE_NAME}\\
-#" ezpublish_legacy/settings/override/site.ini.append.php
 
 # Enable this for install database, set the right environment
 #app/console doctrine:database:create --env=prod
