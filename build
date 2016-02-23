@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+set -x
+
+php composer -n create-project sylius/sylius
+cd sylius
+php app/console sylius:install
+php app/console server:run
+
+# Enable this for install database, set the right environment
+php app/console doctrine:database:create --env=test
+php app/console doctrine:schema:create --env=test
