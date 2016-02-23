@@ -14,7 +14,7 @@ sed -i "s/sylius.database.password: null/sylius.database.password: ${DATABASE_PA
 sudo find {app,web} -type d -print0 | xargs -0 chmod -R 777
 
 # Install Sylius
-app/console sylius:install
+app/console sylius:install --no-interaction
 
 sudo find {app/{cache,logs,config},web} -type d -print0 | xargs -0 chmod -R 777
 
