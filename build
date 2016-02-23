@@ -3,10 +3,19 @@
 set -e
 set -x
 
-php composer -n create-project sylius/sylius
+composer -n create-project sylius/sylius
 cd sylius
-php app/console sylius:install
+app/console sylius:install
+
+#sed -i "
+#/^\[DatabaseSettings\]/ a\
+#Server=${DATABASE_SERVER}\\
+#Port=3306\\
+#User=${DATABASE_USER}\\
+#Password=${DATABASE_PASSWORD}\\
+#Database=${DATABASE_NAME}\\
+#" ezpublish_legacy/settings/override/site.ini.append.php
 
 # Enable this for install database, set the right environment
-php app/console doctrine:database:create --env=prod
-php app/console doctrine:schema:create --env=prod
+app/console doctrine:database:create --env=prod
+app/console doctrine:schema:create --env=prod
