@@ -5,7 +5,7 @@ set -x
 
 composer -n create-project sylius/sylius
 cd sylius
-app/console sylius:install
+#app/console sylius:install
 
 #sed -i "
 #/^\[DatabaseSettings\]/ a\
