@@ -22,7 +22,7 @@ TABLES=$(mysql -u ${DATABASE_USER} -p${DATABASE_PASSWORD} ${DATABASE_NAME} -e 's
  
 for t in $TABLES
 do
-	echo "Deleting $t table from $MDB database..."
+	echo "Deleting $t table from ${DATABASE_NAME} database..."
 	mysql -u ${DATABASE_USER} -p${DATABASE_PASSWORD} ${DATABASE_NAME} -e "drop table $t"
 done
 
