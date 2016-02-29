@@ -18,6 +18,14 @@ sed -i "s/sylius.database.name: sylius/sylius.database.name: ${DATABASE_NAME}/g"
 sed -i "s/sylius.database.user: root/sylius.database.user: ${DATABASE_USER}/g" app/config/parameters.yml
 sed -i "s/sylius.database.password: null/sylius.database.password: ${DATABASE_PASSWORD}/g" app/config/parameters.yml
 
+TABLES=$(mysql -u ${DATABASE_USER} -p${DATABASE_PASSWORD} ${DATABASE_NAME} -e 'show tables' | awk '{ print $1}' | grep -v '^Tables' )
+ 
+for t in $TABLES
+do
+	echo "Deleting $t table from $MDB database..."
+	mysql -u ${DATABASE_USER} -p${DATABASE_PASSWORD} ${DATABASE_NAME} -e "drop table $t"
+done
+
 # Enable this for install database, set the right environment
 #app/console doctrine:database:create --env=${SYMFONY_ENV} --no-interaction
 app/console doctrine:schema:create --env=${SYMFONY_ENV} --no-interaction
