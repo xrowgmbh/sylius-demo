@@ -10,10 +10,10 @@ rm -R sylius
 find {app,web} -type d -print0 | xargs -0 chmod -R 777
 
 # Setup project parameters
-sed -i "s/sylius.database.host: 127.0.0.1/sylius.database.host: ${DATABASE_SERVER}/g" app/config/parameters.yml
-sed -i "s/sylius.database.name: sylius/sylius.database.name: ${DATABASE_NAME}/g" app/config/parameters.yml
-sed -i "s/sylius.database.user: root/sylius.database.user: ${DATABASE_USER}/g" app/config/parameters.yml
-sed -i "s/sylius.database.password: null/sylius.database.password: ${DATABASE_PASSWORD}/g" app/config/parameters.yml
+sed -i "s/database_host: 127.0.0.1/sylius.database.host: ${DATABASE_SERVER}/g" app/config/parameters.yml
+sed -i "s/database_name: sylius/sylius.database.name: ${DATABASE_NAME}/g" app/config/parameters.yml
+sed -i "s/database_user: root/sylius.database.user: ${DATABASE_USER}/g" app/config/parameters.yml
+sed -i "s/database_password: null/sylius.database.password: ${DATABASE_PASSWORD}/g" app/config/parameters.yml
 
 # Delete a DB Schema to ensure if it is empty. With '--no-interaction' flag sylius will try to update a current schema, so it can cause an exception. 
 # If we don't care about demo database demo it will be just insurance that schema does not exist.
