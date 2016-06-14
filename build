@@ -8,6 +8,7 @@ mv -f sylius/* .
 rm -R sylius
 find {app,web} -type d -print0 | xargs -0 chmod -R 777
 
+app/console doctrine:schema:drop --env=${SYMFONY_ENV} --force
 # Install Sylius
 app/console sylius:install --no-interaction
 
