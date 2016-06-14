@@ -8,12 +8,14 @@ mv -f sylius/* .
 rm -R sylius
 find {app,web} -type d -print0 | xargs -0 chmod -R 777
 
+# Delete DB Schema
 app/console doctrine:schema:drop --env=${SYMFONY_ENV} --force
+
 # Install Sylius
 app/console sylius:install --no-interaction
 
 find {app/{cache,logs,config},web} -type d -print0 | xargs -0 chmod -R 777
-find {web/media} -type f -print0 | xargs -0 chmod -R 0776
+find {web/assets} -type f -print0 | xargs -0 chmod -R 0776
 
 sed -i "s/sylius.database.host: 127.0.0.1/sylius.database.host: ${DATABASE_SERVER}/g" app/config/parameters.yml
 sed -i "s/sylius.database.name: sylius/sylius.database.name: ${DATABASE_NAME}/g" app/config/parameters.yml
