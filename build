@@ -9,22 +9,26 @@ mv -f sylius/* .
 rm -R sylius
 find {app,web} -type d -print0 | xargs -0 chmod -R 777
 
-mv app/config/parameters.yml.dist app/config/parameters_sylius.yml
+mv app/config/parameters.yml.dist app/config/parameters.yml
 
 # Setup project parameters
-sed -i "s/database_host: 127.0.0.1/database_host: ${DATABASE_SERVER}/g" app/config/parameters_sylius.yml
-sed -i "s/database_name: sylius/database_name: ${DATABASE_NAME}/g" app/config/parameters_sylius.yml
-sed -i "s/database_user: root/database_user: ${DATABASE_USER}/g" app/config/parameters_sylius.yml
-sed -i "s/database_password: null/database_password: ${DATABASE_PASSWORD}/g" app/config/parameters_sylius.yml
+sed -i "s/database_host: 127.0.0.1/database_host: ${DATABASE_SERVER}/g" app/config/parameters.yml
+sed -i "s/database_name: sylius/database_name: ${DATABASE_NAME}/g" app/config/parameters.yml
+sed -i "s/database_user: root/database_user: ${DATABASE_USER}/g" app/config/parameters.yml
+sed -i "s/database_password: null/database_password: ${DATABASE_PASSWORD}/g" app/config/parameters.yml
 
-sed -i "s/mailer_transport: null/mailer_transport: ${DATABASE_PASSWORD}/g" app/config/parameters_sylius.yml
-sed -i "s/mailer_host: null/mailer_host: ${DATABASE_PASSWORD}/g" app/config/parameters_sylius.yml
-sed -i "s/mailer_user: null/mailer_user: ${DATABASE_PASSWORD}/g" app/config/parameters_sylius.yml
-sed -i "s/mailer_password: null/mailer_password: ${DATABASE_PASSWORD}/g" app/config/parameters_sylius.yml
+cp app/config/parameters.yml app/config/parameters_sylius.yml
 
-sed -i "s/currency: USD/currency: EUR/g" app/config/parameters_sylius.yml
+# sed -i "s/mailer_transport: null/mailer_transport: ${SYMFONY__MAILER__TRANSPORT}/g" app/config/parameters_sylius.yml
+# sed -i "s/mailer_host: null/mailer_host: ${DATABASE_PASSWORD}/g" app/config/parameters_sylius.yml
+# sed -i "s/mailer_user: null/mailer_user: ${DATABASE_PASSWORD}/g" app/config/parameters_sylius.yml
+# sed -i "s/mailer_password: null/mailer_password: ${DATABASE_PASSWORD}/g" app/config/parameters_sylius.yml
 
-sed -i "/^imports:/ a\    - { resource: parameters_sylius.yml }\\" app/config/config.yml
+#sed -i "s/currency: USD/currency: EUR/g" app/config/parameters_sylius.yml
+
+
+sed -i "s/resource: parameters.yml/resource: parameters_sylius.yml/g" app/config/config.yml
+sed -i "/^imports:/ a\    - { resource: parameters.yml }\\" app/config/config.yml
 
 # Delete a DB Schema to ensure if it is empty. With '--no-interaction' flag sylius will try to update a current schema, so it can cause an exception.
 # If we don't care about demo database demo it will be just insurance that schema does not exist.
@@ -39,25 +43,3 @@ app/console doctrine:fixtures:load --env=${SYMFONY_ENV} --no-interaction
 # In addition to these folders, we should also ensure, that: assets, bundles, css, js and media folders inside a web folder will have a proper access rights
 find {app/{cache,logs,config},web} -type d -print0 | xargs -0 chmod -R 777
 find web/assets -type f -print0 | xargs -0 chmod -R 0776
-
-# Probably not needed, as a database is newly created with a schema (line 20+23) and it is empty. To deletion.
-# TABLES=$(mysql -u ${DATABASE_USER} -p${DATABASE_PASSWORD} ${DATABASE_NAME} -e 'show tables' | awk '{ print $1}' | grep -v '^Tables' )
-#
-# for t in $TABLES
-# do
-#	echo "Deleting $t table from ${DATABASE_NAME} database..."
-#	mysql -u ${DATABASE_USER} -p${DATABASE_PASSWORD} ${DATABASE_NAME} -e "SET FOREIGN_KEY_CHECKS=0;drop table $t"
-# done
-
-# Already done in line 23
-# Enable this for install database, set the right environment
-# app/console doctrine:database:create --env=${SYMFONY_ENV} --no-interaction <- not needed
-# app/console doctrine:schema:create --env=${SYMFONY_ENV} --no-interaction <- not needed
-
-
-# Cannot find a use case for this now. It should be deleted. It also cause a bug, because there could be more than one file that ends with 'parameters.yml' (Ex. @SyliusCoreBundle/Resources/config/app/parameters.yml).
-
-# Fix regexp to match only resource: parameters.yml
-#sed -i "s/resource: parameters.yml/resource: parameters_sylius.yml/g" app/config/config.yml
-
-#mv app/config/parameters.yml app/config/parameters_sylius.yml
