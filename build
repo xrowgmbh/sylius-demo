@@ -22,9 +22,9 @@ sed -i "s/mailer_host: null/mailer_host: ${DATABASE_PASSWORD}/g" app/config/para
 sed -i "s/mailer_user: null/mailer_user: ${DATABASE_PASSWORD}/g" app/config/parameters_sylius.yml
 sed -i "s/mailer_password: null/mailer_password: ${DATABASE_PASSWORD}/g" app/config/parameters_sylius.yml
 
-sed -i '$ a\'"    currency: EUR" app/config/parameters_sylius.yml
-sed -i '$ a\'"    wkhtmltopdf.bin_path: /usr/bin/wkhtmltopdf" app/config/parameters_sylius.yml
-sed -i '$ a\'"    wkhtmltoimage.bin_path: /usr/bin/wkhtmltoimage" app/config/parameters_sylius.yml
+sed -i "s/currency: USD/currency: EUR/g" app/config/parameters_sylius.yml
+
+sed -i "/^imports:/ a\    - { resource: parameters_sylius.yml }\\" app/config/config.yml
 
 # Delete a DB Schema to ensure if it is empty. With '--no-interaction' flag sylius will try to update a current schema, so it can cause an exception.
 # If we don't care about demo database demo it will be just insurance that schema does not exist.
@@ -57,10 +57,7 @@ find web/assets -type f -print0 | xargs -0 chmod -R 0776
 
 # Cannot find a use case for this now. It should be deleted. It also cause a bug, because there could be more than one file that ends with 'parameters.yml' (Ex. @SyliusCoreBundle/Resources/config/app/parameters.yml).
 
-#mv app/config/parameters.yml app/config/parameters_sylius.yml
-
 # Fix regexp to match only resource: parameters.yml
-sed -i "s/resource: parameters.yml/resource: parameters_sylius.yml/g" app/config/config.yml
+#sed -i "s/resource: parameters.yml/resource: parameters_sylius.yml/g" app/config/config.yml
 
-
-sed -i "/^imports:/ a\    - { resource: parameters.yml }\\" app/config/config.yml
+#mv app/config/parameters.yml app/config/parameters_sylius.yml
