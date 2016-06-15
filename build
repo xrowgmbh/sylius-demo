@@ -15,7 +15,7 @@ mv app/config/parameters.yml.dist app/config/parameters.yml
 sed -i "s/database_host: 127.0.0.1/database_host: ${DATABASE_SERVER}/g" app/config/parameters.yml
 sed -i "s/database_name: sylius/database_name: ${DATABASE_NAME}/g" app/config/parameters.yml
 sed -i "s/database_user: root/database_user: ${DATABASE_USER}/g" app/config/parameters.yml
-sed -i "s/database_password: null/database_password: ${DB_PASSWORD}/g" app/config/parameters.yml
+sed -i "s/database_password: null/database_password: ${DATABAS_PASSWORD}/g" app/config/parameters.yml
 
 cp app/config/parameters.yml app/config/parameters_sylius.yml
 
