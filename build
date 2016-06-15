@@ -40,7 +40,7 @@ app/console doctrine:fixtures:load --env=${SYMFONY_ENV} --no-interaction
 
 # In addition to these folders, we should also ensure, that: assets, bundles, css, js and media folders inside a web folder will have a proper access rights
 find {app/{cache,logs,config},web} -type d -print0 | xargs -0 chmod -R 777
-find {web/assets} -type f -print0 | xargs -0 chmod -R 0776
+find web/assets -type f -print0 | xargs -0 chmod -R 0776
 
 # Probably not needed, as a database is newly created with a schema (line 20+23) and it is empty. To deletion.
 # TABLES=$(mysql -u ${DATABASE_USER} -p${DATABASE_PASSWORD} ${DATABASE_NAME} -e 'show tables' | awk '{ print $1}' | grep -v '^Tables' )
