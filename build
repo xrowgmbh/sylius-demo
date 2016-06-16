@@ -12,17 +12,10 @@ find {app,web} -type d -print0 | xargs -0 chmod -R 777
 cp app/config/parameters.yml.dist app/config/parameters_sylius.yml
 
 # Setup project parameters
-sed -i "s/database_host: 127.0.0.1/database_host: ${SYMFONY__DATABASE_SERVER}/g" app/config/parameters_sylius.yml
-sed -i "s/database_name: sylius/database_name: ${SYMFONY__DATABASE_NAME}/g" app/config/parameters_sylius.yml
-sed -i "s/database_user: root/database_user: ${SYMFONY__DATABASE_USER}/g" app/config/parameters_sylius.yml
-sed -i "s/database_password: ~/database_password: ${SYMFONY__DATABASE_PASSWORD}/g" app/config/parameters_sylius.yml
-
-sed -i "s/mailer_transport: smtp/mailer_transport: ${SYMFONY__MAILER_TRANSPORT}/g" app/config/parameters_sylius.yml
-sed -i "s/mailer_host: 127.0.0.1/mailer_host: ${SYMFONY__MAILER_HOST}/g" app/config/parameters_sylius.yml
-sed -i "s/mailer_user: null/mailer_user: ${SYMFONY__MAILER_USER}/g" app/config/parameters_sylius.yml
-sed -i "s/mailer_password: null/mailer_password: ${SYMFONY__MAILER_PASSWORD}/g" app/config/parameters_sylius.yml
-
-sed -i "s/currency: USD/currency: ${SYMFONY__CURRENCY}/g" app/config/parameters_sylius.yml
+sed -i "s/database_host: 127.0.0.1/database_host: ${DATABASE_SERVER}/g" app/config/parameters_sylius.yml
+sed -i "s/database_name: sylius/database_name: ${DATABASE_NAME}/g" app/config/parameters_sylius.yml
+sed -i "s/database_user: root/database_user: ${DATABASE_USER}/g" app/config/parameters_sylius.yml
+sed -i "s/database_password: ~/database_password: ${DATABASE_PASSWORD}/g" app/config/parameters_sylius.yml
 
 sed -i "s/resource: parameters.yml/resource: parameters_sylius.yml/g" app/config/config.yml
 sed -i "/^imports:/ a\    - { resource: parameters.yml }\\" app/config/config.yml
