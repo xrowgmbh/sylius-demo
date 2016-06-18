@@ -9,6 +9,9 @@ mv -f sylius/* .
 rm -R sylius
 find {app,web} -type d -print0 | xargs -0 chmod -R 777
 
+npm install --save-dev gulp
+npm install
+
 cp app/config/parameters.yml.dist app/config/parameters_sylius.yml
 
 # Setup project parameters
@@ -33,3 +36,5 @@ app/console doctrine:fixtures:load --env=${SYMFONY_ENV} --no-interaction
 # In addition to these folders, we should also ensure, that: assets, bundles, css, js and media folders inside a web folder will have a proper access rights
 find {app/{cache,logs,config},web} -type d -print0 | xargs -0 chmod -R 777
 find web/assets -type f -print0 | xargs -0 chmod -R 0776
+
+./node_modules/.bin/gulp
