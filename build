@@ -4,19 +4,15 @@ set -e
 set -x
 
 # Create a sylius project. We can consider using -s dev flag to download a dev master Sylius version instead of the latest tagged one.
-#composer -n create-project sylius/sylius=dev-php-5-5-9-support --repository=https://github.com/xrowgmbh/Sylius.git
-
 git clone -b php-5-5-9-support --single-branch git@github.com:xrowgmbh/Sylius.git
 
 mv -f Sylius/* .
 rm -R Sylius
 
 composer install -n --no-progress --optimize-autoloader
-
-find {app,web} -type d -print0 | xargs -0 chmod -R 777
-
-npm install --save-dev gulp
 npm install
+
+find {app/{cache,logs},web} -type d -print0 | xargs -0 chmod -R 777
 
 cp app/config/parameters.yml.dist app/config/parameters_sylius.yml
 
@@ -42,7 +38,6 @@ app/console sylius:install --env=${SYMFONY_ENV} --no-interaction
 app/console doctrine:fixtures:load --env=${SYMFONY_ENV} --no-interaction
 
 # In addition to these folders, we should also ensure, that: assets, bundles, css, js and media folders inside a web folder will have a proper access rights
-find {app/{cache,logs,config},web} -type d -print0 | xargs -0 chmod -R 777
-find web/assets -type f -print0 | xargs -0 chmod -R 0776
+find {app/{cache,logs},web} -type d -print0 | xargs -0 chmod -R 777
 
 ./node_modules/.bin/gulp
