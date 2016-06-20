@@ -4,12 +4,11 @@ set -e
 set -x
 
 # Create a sylius project. We can consider using -s dev flag to download a dev master Sylius version instead of the latest tagged one.
-git clone -b php-5-5-9-support --single-branch git@github.com:xrowgmbh/Sylius.git
+composer create-project sylius/sylius --repository='{"type":"vcs", "url": "https://github.com/xrowgmbh/Sylius.git"}' ./sylius "dev-php-5-5-9-support" -s dev
 
-mv -f Sylius/* .
-rm -R Sylius
+mv -f sylius/* .
+rm -R sylius
 
-composer install -n --no-progress --optimize-autoloader
 npm install
 
 find {app/{cache,logs},web} -type d -print0 | xargs -0 chmod -R 777
@@ -29,7 +28,7 @@ sed -i "s/sylius_backend_dashboard/sylius_admin_dashboard/g" src/Sylius/Bundle/W
 
 # Delete a DB Schema to ensure if it is empty. With '--no-interaction' flag sylius will try to update a current schema, so it can cause an exception.
 # If we don't care about demo database demo it will be just insurance that schema does not exist.
-app/console doctrine:database:drop --env=${SYMFONY_ENV} --force
+# app/console doctrine:database:drop --env=${SYMFONY_ENV} --force
 
 # Install Sylius
 app/console sylius:install --env=${SYMFONY_ENV} --no-interaction
